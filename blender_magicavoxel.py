@@ -57,7 +57,7 @@ from bpy_extras.io_utils import (
 bl_info = {
     "name": "MagicaVoxel VOX format",
     "author": "playmyskay",
-    "version": (1, 5, 7, 1),
+    "version": (1, 5, 7, 2),
     "blender": (3, 0, 0),
     "location": "File > Import-Export",
     "description": "Importer for MagicaVoxel VOX files",
@@ -1229,9 +1229,8 @@ class VoxMaterial:
         # default 0.3 / 1.3
         self.ior = float(data["_ri"]) if "_ri" in data else 1.3
         # _flux --> Power {0, 1, 2, 3, 4}, default 0
-        # We calculate +1 to the power as we handle it just as a multiplier
-        # Default to multiplier 1 (power 0 + 1) when _flux is missing but type is _emit
-        self.flux = float(data["_flux"]) + 1 if "_flux" in data and self.type == "_emit" else (1 if self.type == "_emit" else 0)
+        # Power acts as an exponential intensity scale in MagicaVoxel
+        self.flux = pow(2, float(data["_flux"]) + 1) if "_flux" in data and self.type == "_emit" else (2 if self.type == "_emit" else 0)
         has_emission = self.type == VoxMaterial.TYPE_EMIT
         # _emit --> Emission [0-1] float, default: 0.0
         self.emission = float(data["_emit"]) * self.flux if "_emit" in data and has_emission else 0
