@@ -1,5 +1,11 @@
 # Changelog
 
+## [v1.5.7.1](https://github.com/AstrorEnales/blender_magicavoxel/releases/tag/v1.5.8)
+
+  * **[fix]** Fix emission strength not being applied for Vertex Color and Texture material modes
+  * **[fix]** Fix colors appearing too bright in Material Per Color mode (sRGB to linear conversion)
+  * **[fix]** Fix emission power (flux) using linear instead of exponential scaling
+
 ## [v1.5.7](https://github.com/AstrorEnales/blender_magicavoxel/releases/tag/v1.5.7)
 
   * **[feature]** #15 Add support for IMAP color palette reordering
