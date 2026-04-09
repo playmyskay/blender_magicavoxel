@@ -1230,7 +1230,8 @@ class VoxMaterial:
         self.ior = float(data["_ri"]) if "_ri" in data else 1.3
         # _flux --> Power {0, 1, 2, 3, 4}, default 0
         # We calculate +1 to the power as we handle it just as a multiplier
-        self.flux = float(data["_flux"]) + 1 if "_flux" in data and self.type == "_emit" else 0
+        # Default to multiplier 1 (power 0 + 1) when _flux is missing but type is _emit
+        self.flux = float(data["_flux"]) + 1 if "_flux" in data and self.type == "_emit" else (1 if self.type == "_emit" else 0)
         has_emission = self.type == VoxMaterial.TYPE_EMIT
         # _emit --> Emission [0-1] float, default: 0.0
         self.emission = float(data["_emit"]) * self.flux if "_emit" in data and has_emission else 0
@@ -1397,6 +1398,10 @@ class ShaderNodeProxy:
             return translated_key
         if key in node.inputs:
             return key
+        # Fallback: match by socket identifier (stable across locales and versions)
+        for inp in node.inputs:
+            if inp.identifier == key:
+                return inp.name
         if alternatives is not None:
             for alternative in alternatives:
                 translated_key = bpy.app.translations.pgettext(alternative)
@@ -1404,6 +1409,9 @@ class ShaderNodeProxy:
                     return translated_key
                 if alternative in node.inputs:
                     return alternative
+                for inp in node.inputs:
+                    if inp.identifier == alternative:
+                        return inp.name
         print("[WARN] Failed to find shader node input key '%s' or any alternative %s" % (key, alternatives))
         return None
 
@@ -1414,6 +1422,10 @@ class ShaderNodeProxy:
             return translated_key
         if key in node.outputs:
             return key
+        # Fallback: match by socket identifier (stable across locales and versions)
+        for out in node.outputs:
+            if out.identifier == key:
+                return out.name
         if alternatives is not None:
             for alternative in alternatives:
                 translated_key = bpy.app.translations.pgettext(alternative)
@@ -1421,6 +1433,9 @@ class ShaderNodeProxy:
                     return translated_key
                 if alternative in node.outputs:
                     return alternative
+                for out in node.outputs:
+                    if out.identifier == alternative:
+                        return out.name
         print("[WARN] Failed to find shader node output key '%s' or any alternative %s" % (key, alternatives))
         return None
 
