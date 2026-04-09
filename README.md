@@ -7,6 +7,8 @@
 
 # blender_magicavoxel
 
+> **Fork of [AstrorEnales/blender_magicavoxel](https://github.com/AstrorEnales/blender_magicavoxel)** with fixes for emission strength, sRGB color handling, and emission power scaling (see [Changelog v1.5.7.1](CHANGELOG.md)).
+
 Addon for the [Blender](https://www.blender.org) 3D modeling software for
 loading [MagicaVoxel](https://ephtracy.github.io) VOX files.
 
@@ -72,7 +74,7 @@ supports different modes how this information is imported.
 > ⚠️ Please note: Additional material props are still experimental and under development
 
 | Mode                        | Description                                                                                                                                     |
-|-----------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
+| --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
 | Ignore                      | Neither colors nor materials are imported.                                                                                                      |
 | Vertex Color                | Only the color palette will be imported and assigned to face vertex colors. A simple material is added using the vertex colors as 'Base Color'. |
 | Material Per Color          | A material is added per color in the color palette and assigned to the faces material index.                                                    |
@@ -85,7 +87,7 @@ Depending on the material mode, additional material properties are either added 
 texture, or blender material nodes.
 
 | Mode                               | Description                                                                                                                                               |
-|------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Vertex Color + Prop                | The color palette and certain material properties are assigned as vertex color layers. A simple material is added using the vertex color layers.          |
 | Material Per Color + Prop          | A material is added per color in the color palette and assigned to the faces material index. Additional material properties are stored for each material. |
 | Materials As Texture + Prop        | The color palette and certain material properties are created as a 256x1 texture. A simple material is added using these textures.                        |
@@ -148,7 +150,7 @@ and [here](https://0fps.net/2012/06/30/meshing-in-a-minecraft-game/).
 ## Related Works / Feature Comparison
 
 |                         | This                                                                                  | [technistguru/<br>MagicaVoxel_Importer](https://github.com/technistguru/MagicaVoxel_Importer)    | [RichysHub/<br>MagicaVoxel-VOX-importer](https://github.com/RichysHub/MagicaVoxel-VOX-importer) | [ldo/<br>blender_magivox_import](https://github.com/ldo/blender_magivox_import) |
-|------------------------:|---------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
+| ----------------------: | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
 |                  Active | ✅                                                                                     | ❌ [[ref]](https://github.com/technistguru/MagicaVoxel_Importer/issues/2#issuecomment-1020678306) | ~                                                                                               | Last update 06.07.2021                                                          |
 |   Supported VOX version | 150, 200                                                                              | 150                                                                                              | 150                                                                                             | 150                                                                             |
 |               Hierarchy | ✅                                                                                     | ✅                                                                                                | ❌                                                                                               | ❌                                                                               |
