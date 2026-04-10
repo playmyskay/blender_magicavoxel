@@ -1397,6 +1397,10 @@ class ShaderNodeProxy:
             return translated_key
         if key in node.inputs:
             return key
+        # Fallback: match by socket identifier (stable across locales and versions)
+        for inp in node.inputs:
+            if inp.identifier == key:
+                return inp.name
         if alternatives is not None:
             for alternative in alternatives:
                 translated_key = bpy.app.translations.pgettext(alternative)
@@ -1404,6 +1408,9 @@ class ShaderNodeProxy:
                     return translated_key
                 if alternative in node.inputs:
                     return alternative
+                for inp in node.inputs:
+                    if inp.identifier == alternative:
+                        return inp.name
         print("[WARN] Failed to find shader node input key '%s' or any alternative %s" % (key, alternatives))
         return None
 
@@ -1414,6 +1421,10 @@ class ShaderNodeProxy:
             return translated_key
         if key in node.outputs:
             return key
+        # Fallback: match by socket identifier (stable across locales and versions)
+        for out in node.outputs:
+            if out.identifier == key:
+                return out.name
         if alternatives is not None:
             for alternative in alternatives:
                 translated_key = bpy.app.translations.pgettext(alternative)
@@ -1421,6 +1432,9 @@ class ShaderNodeProxy:
                     return translated_key
                 if alternative in node.outputs:
                     return alternative
+                for out in node.outputs:
+                    if out.identifier == alternative:
+                        return out.name
         print("[WARN] Failed to find shader node output key '%s' or any alternative %s" % (key, alternatives))
         return None
 
