@@ -1913,9 +1913,9 @@ class ImportVOX(bpy.types.Operator, ImportHelper):
                         while voxel_iterator.move_next():
                             (x, y, z, value) = voxel_iterator.current
                             target_position = world_matrix @ mathutils.Vector((
-                                x + 0.5 - math.floor(mesh.grid.width * 0.5),
-                                y + 0.5 - math.floor(mesh.grid.depth * 0.5),
-                                z + 0.5 - math.floor(mesh.grid.height * 0.5)
+                                x + 0.5 - mesh.grid.width * 0.5,
+                                y + 0.5 - mesh.grid.depth * 0.5,
+                                z + 0.5 - mesh.grid.height * 0.5
                             ))
                             combined_mesh.voxels.add(int(target_position[0] - 0.5), int(target_position[1] - 0.5),
                                                      int(target_position[2] - 0.5), value)
@@ -2335,9 +2335,9 @@ class ImportVOX(bpy.types.Operator, ImportHelper):
         if self.join_models:
             return p[0] * self.voxel_size, p[1] * self.voxel_size, p[2] * self.voxel_size
         return (
-            (p[0] - math.floor(grid.width * 0.5)) * self.voxel_size,
-            (p[1] - math.floor(grid.depth * 0.5)) * self.voxel_size,
-            (p[2] - math.floor(grid.height * 0.5)) * self.voxel_size
+            (p[0] - grid.width * 0.5) * self.voxel_size,
+            (p[1] - grid.depth * 0.5) * self.voxel_size,
+            (p[2] - grid.height * 0.5) * self.voxel_size
         )
 
     def load_vox(self, filepath: str) -> VoxModel or None:

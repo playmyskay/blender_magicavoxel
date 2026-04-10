@@ -1,6 +1,10 @@
 # Changelog
 
-## [v1.5.7.1](https://github.com/AstrorEnales/blender_magicavoxel/releases/tag/v1.5.8)
+## [v1.5.7.2](https://github.com/playmyskay/blender_magicavoxel/releases/tag/v1.5.7.2)
+
+  * **[fix]** Fix object origin offset by half a voxel for models with odd dimensions (`math.floor` rounding in vertex position centering)
+
+## [v1.5.7.1](https://github.com/AstrorEnales/blender_magicavoxel/releases/tag/v1.5.7.1)
 
   * **[fix]** Fix emission strength not being applied for Vertex Color and Texture material modes
   * **[fix]** Fix colors appearing too bright in Material Per Color mode (sRGB to linear conversion)
