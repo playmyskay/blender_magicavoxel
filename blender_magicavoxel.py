@@ -1705,6 +1705,13 @@ class ImportVOX(bpy.types.Operator, ImportHelper):
         default=False,
     )
 
+    center_origin: BoolProperty(
+        name="Center Origin",
+        description="Place the object origin at the exact center of the mesh. "
+                    "Without this, models with odd dimensions have their origin offset by half a voxel",
+        default=False,
+    )
+
     def create_materials_vertex_colors(self, collection_name: str, _: VoxModel):
         vertex_color_mat = bpy.data.materials.new(name=collection_name + " Material")
         vertex_color_mat.use_nodes = True
@@ -1822,6 +1829,7 @@ class ImportVOX(bpy.types.Operator, ImportHelper):
                 "join_models",
                 "max_texture_size",
                 "import_material_props",
+                "center_origin",
             ),
         )
 
@@ -1913,9 +1921,9 @@ class ImportVOX(bpy.types.Operator, ImportHelper):
                         while voxel_iterator.move_next():
                             (x, y, z, value) = voxel_iterator.current
                             target_position = world_matrix @ mathutils.Vector((
-                                x + 0.5 - mesh.grid.width * 0.5,
-                                y + 0.5 - mesh.grid.depth * 0.5,
-                                z + 0.5 - mesh.grid.height * 0.5
+                                x + 0.5 - (mesh.grid.width * 0.5 if self.center_origin else math.floor(mesh.grid.width * 0.5)),
+                                y + 0.5 - (mesh.grid.depth * 0.5 if self.center_origin else math.floor(mesh.grid.depth * 0.5)),
+                                z + 0.5 - (mesh.grid.height * 0.5 if self.center_origin else math.floor(mesh.grid.height * 0.5))
                             ))
                             combined_mesh.voxels.add(int(target_position[0] - 0.5), int(target_position[1] - 0.5),
                                                      int(target_position[2] - 0.5), value)
@@ -2334,10 +2342,16 @@ class ImportVOX(bpy.types.Operator, ImportHelper):
     def get_vertex_pos(self, p: Tuple[float, float, float], grid: VoxelGrid) -> Tuple[float, float, float]:
         if self.join_models:
             return p[0] * self.voxel_size, p[1] * self.voxel_size, p[2] * self.voxel_size
+        if self.center_origin:
+            return (
+                (p[0] - grid.width * 0.5) * self.voxel_size,
+                (p[1] - grid.depth * 0.5) * self.voxel_size,
+                (p[2] - grid.height * 0.5) * self.voxel_size
+            )
         return (
-            (p[0] - grid.width * 0.5) * self.voxel_size,
-            (p[1] - grid.depth * 0.5) * self.voxel_size,
-            (p[2] - grid.height * 0.5) * self.voxel_size
+            (p[0] - math.floor(grid.width * 0.5)) * self.voxel_size,
+            (p[1] - math.floor(grid.depth * 0.5)) * self.voxel_size,
+            (p[2] - math.floor(grid.height * 0.5)) * self.voxel_size
         )
 
     def load_vox(self, filepath: str) -> VoxModel or None:
@@ -2643,6 +2657,7 @@ class VOX_PT_import_geometry(bpy.types.Panel):
         layout.prop(operator, "join_models")
 
         layout.prop(operator, "voxel_size")
+        layout.prop(operator, "center_origin")
         layout.row().prop(operator, "meshing_type")
         if operator.meshing_type in ["CUBES_AS_OBJ", "SIMPLE_CUBES"]:
             layout.row().prop(operator, "voxel_hull")
