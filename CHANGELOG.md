@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.5.7.3](https://github.com/playmyskay/blender_magicavoxel/releases/tag/v1.5.7.3)
+
+  * **[fix]** Fix shader node socket lookup failing on localized Blender installations by adding socket identifier fallback
+
 ## [v1.5.7.2](https://github.com/playmyskay/blender_magicavoxel/releases/tag/v1.5.7.2)
 
   * **[fix]** Fix object origin offset by half a voxel for models with odd dimensions (`math.floor` rounding in vertex position centering)
